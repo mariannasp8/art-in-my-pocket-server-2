@@ -14,39 +14,26 @@ router.post("/create-piece", (req, res) => {
     .catch((err) => res.json(err));
 });
 
-//procurar:
-/* router.get("/search-pieces/:author", async (req, res) => {
-  try {
-    const searchAuthor = req.params.author;
-    const allPieces = await Piece.findOne({ author: searchAuthor });
-    res.status(200).json(allPieces);
-  } catch {
-    res.status(500).json({ message: `abc` });
-  }
-}); */
-
 // search piece
 router.get("/search-pieces/:author", (req, res) => {
-  const { pieceId } = req.params;
+  const { author } = req.params;
 
-  Piece.findById(pieceId)
-    .then((searchedPiece) => res.status(201).json(searchedPiece))
+  Piece.find({ author: { $regex: author, $options: "i" } })
+    .then((searchedPieces) => res.status(201).json(searchedPieces))
     .catch((err) => res.json(err));
 });
 
-// NOT WORKING !!!! - giving me error with pieceId
 // edit the piece
 router.put("/edit-pieces/:pieceId", (req, res) => {
   const { pieceId } = req.params;
 
-  Piece.findByIdAndUpdate(pieceId, peq.body, { new: true })
+  Piece.findByIdAndUpdate(pieceId, req.body, { new: true })
     .then((uptadedPiece) => res.status(201).json(uptadedPiece))
     .catch((err) => res.json(err));
 });
 
-// NOT WORKING !!!!
 // delete the piece
-router.put("/delete-pieces/:pieceId", (req, res) => {
+router.delete("/delete-pieces/:pieceId", (req, res) => {
   const { pieceId } = req.params;
 
   Piece.findByIdAndRemove(pieceId)
