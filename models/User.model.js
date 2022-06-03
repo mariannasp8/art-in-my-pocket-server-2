@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-// TODO: Please make sure you edit the user model to whatever makes sense in this case
+// CHECK THIS
 const randomPhoto = "";
 
 /* const randomPhoto = () => {
