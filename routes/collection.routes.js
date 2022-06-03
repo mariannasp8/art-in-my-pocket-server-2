@@ -6,91 +6,67 @@ const Piece = require("../models/Piece.model");
 const Collection = require("../models/Collection.model");
 
 // create collection
-router.post("/collection", (req, res) => {
+router.post("/create-collection", (req, res) => {
   const { title, img } = req.body;
 
-  Collection.create({ title, img })
+  Collection.create({ title, img, pieces: [] })
     .then((createdCollection) => res.status(201).json(createdCollection))
-    .catch((err) => res.json(err));
+    .catch((err) => res.status(400).json({ message: "error" }));
+});
+// populate the collection with pieces
+router.get("/collection", (req, res) => {
+  Collection.find()
+    .then((allCollections) => res.json(allCollections))
+    .catch((err) => res.status(400).json({ message: "error" }));
 });
 
-// add pieces to collection
-router.put("/collection/add-piece", (req, res, next) => {
+router.get("/collection/:collectionId", (req, res) => {
+  const { collectionId } = req.params;
+
+  Collection.findById(collectionId)
+    .populate("pieces")
+    .then((response) => res.json(response))
+    .catch((err) => res.status(400).json({ message: "error" }));
+});
+
+// add pieces to the collection
+router.put("/collection/add-piece", (req, res) => {
   const { collectionId, pieceId } = req.body;
+
+  Collection.findByIdAndUpdate(
+    collectionId,
+    { $push: { pieces: pieceId } },
+    { new: true }
+  )
+
+    .then((updatedCollection) => res.status(201).json(updatedCollection))
+    .catch((err) => res.status(400).json({ message: "error" }));
 });
 
-// // create collections:
-// router.post("/collection", (req, res, next) => {
-//   const { title, img } = req.body;
+// remove pieces from the collection
+router.put("/collection/delete-piece", (req, res) => {
+  const { collectionId, pieceId } = req.body;
 
-//   Collection.create({ title, img })
-//     .then((createdCollection) => res.status(201).json(createdCollection))
-//     .catch((err) => res.json(err));
-// });
+  Collection.findByIdAndUpdate(
+    collectionId,
+    { $pull: { pieces: pieceId } },
+    { new: true }
+  )
 
-// //add pieces to collection
-// router.put("/collection/add-piece", (req, res, next) => {
-//   const { collectionId, pieceId } = req.body;
+    .then((updatedCollection) => res.status(201).json(updatedCollection))
+    .catch((err) => res.status(400).json({ message: "error" }));
+});
 
-//   axios
-//     .get(
-//       `https://collectionapi.metmuseum.org/public/collection/v1/objects/${pieceId}`,
-//       {
-//         headers: {
-//           authorization: `${process.env.API_KEY}`,
-//         },
-//       }
-//     )
-//     .then((response) => {
-//       //console.log("aqui", response.data);
-//       const pieceFromApi = response.data;
+// delete my collection and the piece inside the collection
+router.delete("/collection/:collectionId", (req, res) => {
+  const { collectionId } = req.params;
+  console.log(collectionId);
 
-//       return Piece.create({
-//         title: pieceFromApi.title,
-//         author: pieceFromApi.artistDisplayName,
-//         img: pieceFromApi.primaryImage,
-//         date: pieceFromApi.objectDate,
-//         nationality: pieceFromApi.country,
-//         dimensions: pieceFromApi.dimensions,
-//         rightsAndReproduction: pieceFromApi.rightsAndReproduction,
-//         repository: pieceFromApi.repository,
-//         collectionId: collectionId,
-//       });
-//     })
-
-//     .then((createdPiece) => {
-//       return Collection.findByIdAndUpdate(
-//         collectionId,
-//         {
-//           $push: { pieces: createdPiece._id },
-//         },
-//         { new: true }
-//       );
-//     })
-//     .then((updatedCollection) => res.status(201).json(updatedCollection))
-//     .catch((err) => res.json(err));
-// });
-
-// // delete the piece:
-// router.delete("/collection/:id", (req, res, next) => {
-//   const { collectionId, pieceId } = req.params;
-//   // delete the piece:
-//   Piece.findByIdAndRemove(id)
-//     .then((response) => res.json(response))
-
-//     //delete collection:
-//     .then((createdPiece) => {
-//       return Collection.findByIdAndUpdate(
-//         collectionId,
-//         {
-//           $pull: { pieces: createdPiece._id },
-//         },
-//         { new: true }
-//       );
-//     })
-//     .then((updatedCollection) => res.status(201).json(updatedCollection))
-
-//     .catch((err) => res.json(err));
-// });
+  Collection.findByIdAndRemove(collectionId)
+    .then((removedCollection) =>
+      res.status(201).json({ message: "Collection removed" })
+    )
+    .catch((err) => res.status(400).json({ message: "error" }));
+});
 
 module.exports = router;

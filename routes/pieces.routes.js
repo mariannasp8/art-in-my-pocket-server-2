@@ -11,7 +11,7 @@ router.post("/create-piece", (req, res) => {
 
   Piece.create({ title, author, img, date, nationality, dimensions })
     .then((createdPiece) => res.status(201).json(createdPiece))
-    .catch((err) => res.json(err));
+    .catch((err) => res.status(400).json({ message: "error" }));
 });
 
 // search piece
@@ -20,7 +20,7 @@ router.get("/search-pieces/:author", (req, res) => {
 
   Piece.find({ author: { $regex: author, $options: "i" } })
     .then((searchedPieces) => res.status(201).json(searchedPieces))
-    .catch((err) => res.json(err));
+    .catch((err) => res.status(400).json({ message: "error" }));
 });
 
 // edit the piece
@@ -29,7 +29,7 @@ router.put("/edit-pieces/:pieceId", (req, res) => {
 
   Piece.findByIdAndUpdate(pieceId, req.body, { new: true })
     .then((uptadedPiece) => res.status(201).json(uptadedPiece))
-    .catch((err) => res.json(err));
+    .catch((err) => res.status(400).json({ message: "error" }));
 });
 
 // delete the piece
@@ -38,7 +38,7 @@ router.delete("/delete-pieces/:pieceId", (req, res) => {
 
   Piece.findByIdAndRemove(pieceId)
     .then((removedPiece) => res.status(201).json(removedPiece))
-    .catch((err) => res.json(err));
+    .catch((err) => res.status(400).json({ message: "error" }));
 });
 
 module.exports = router;

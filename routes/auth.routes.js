@@ -141,30 +141,32 @@ router.post("/login", (req, res, next) => {
 // user profile:
 
 router.get("/profile", (req, res, next) => {
-  const { user } = req.params;
+  const { _id } = req.payload;
 
-  User.findById()
-    .then((User) => res.json(User))
+  User.findById(_id)
+    .populate("collections")
+    .populate("favorites")
+    .then((user) => res.json(user))
     .catch((err) => res.json(err));
 });
 
 // change user profile:
 
-router.put("/profile/:id", (req, res, next) => {
-  const { id } = req.params;
+router.put("/profile", (req, res, next) => {
+  const { _id } = req.payload;
   const { username, name, email, img } = req.body;
 
-  User.findByIdAndUpdate(id, { username, name, email, img }, { new: true })
+  User.findByIdAndUpdate(_id, { username, name, email, img }, { new: true })
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });
 
 // delete user profile:
 
-router.delete("/profile/:id", (req, res, next) => {
-  const { id } = req.params;
+router.delete("/profile", (req, res, next) => {
+  const { _id } = req.payload;
 
-  User.findByIdAndRemove(id)
+  User.findByIdAndRemove(_id)
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });
