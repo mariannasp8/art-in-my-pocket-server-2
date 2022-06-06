@@ -15,6 +15,13 @@ router.post("/create-piece", (req, res) => {
 });
 
 // search piece
+router.get("/search-pieces", (req, res) => {
+  Piece.find({})
+    .then((searchedPieces1) => res.status(201).json(searchedPieces1))
+    .catch((err) => res.status(400).json({ message: "error" }));
+});
+
+// search piece by author:
 router.get("/search-pieces/:author", (req, res) => {
   const { author } = req.params;
 

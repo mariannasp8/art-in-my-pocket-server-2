@@ -139,31 +139,39 @@ router.post("/login", (req, res, next) => {
 });
 
 // user profile:
-
-router.get("/profile", (req, res, next) => {
+router.get("/profile/:userId", isAuthenticated, (req, res) => {
   const { _id } = req.payload;
+  console.log("USER: ", req.payload);
 
   User.findById(_id)
     .populate("collections")
     .populate("favorites")
-    .then((user) => res.json(user))
+    .then((user) => {
+      console.log("User: ", user);
+      res.json(user);
+    })
     .catch((err) => res.json(err));
 });
 
-// change user profile:
-
-router.put("/profile", (req, res, next) => {
+//change user profile:
+router.put("/edit-profile/:userId", isAuthenticated, (req, res) => {
   const { _id } = req.payload;
+  const { userId } = req.params();
   const { username, name, email, img } = req.body;
 
-  User.findByIdAndUpdate(_id, { username, name, email, img }, { new: true })
+  User.findByIdAndUpdate(
+    /*  _id, */
+    userId,
+    { username, name, email, img },
+    { new: true }
+  )
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });
 
 // delete user profile:
 
-router.delete("/profile", (req, res, next) => {
+router.delete("/profile", isAuthenticated, (req, res) => {
   const { _id } = req.payload;
 
   User.findByIdAndRemove(_id)

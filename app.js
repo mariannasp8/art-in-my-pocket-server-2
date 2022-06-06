@@ -25,6 +25,10 @@ app.use("/api", allRoutes);
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
+// PROFILE ROUTES
+// const profileRoutes = require("./routes/profile.routes");
+// app.use("/api", profileRoutes);
+
 /* const searchRoutes = require("./routes/search0.routes");
 app.use("/api", searchRoutes);
  */
@@ -45,30 +49,3 @@ app.use("/event", eventsRoutes); */
 require("./error-handling")(app);
 
 module.exports = app;
-
-/* 
-outer.delete("/categories/:id", isAuthenticated, async (req, res, next) => {
-    const { id } = req.params;
-    const { _id } = req.payload;
-  
-    try {
-      let establishmentToDelete = await Establishment.findById(id);
-      console.log(establishmentToDelete);
-      if (establishmentToDelete.establishmentOwner != _id) {
-        res.status(400).json({ errorMessage: "You are not the owner" });
-        return;
-      }
-      let deletedEstablishment = await Establishment.findByIdAndRemove(id);
-  
-      await User.findByIdAndUpdate(_id, {
-        $pull: { establishments: deletedEstablishment._id },
-      });
-      res.status(200).json({
-        message: `deleted establishment ${deletedEstablishment.companyName}`,
-      });
-    } catch (err) {
-      console.log(err);
-      res.json(err);
-    }
-  });
-   */

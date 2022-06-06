@@ -1,9 +1,8 @@
 const { Schema, model } = require("mongoose");
 
 // CHECK THIS
-const randomPhoto = "";
 
-/* const randomPhoto = () => {
+const randomPhotoArr = () => {
   const pictures = [
     "https://res.cloudinary.com/matildecosta/image/upload/v1652707931/bookclub/illustration-austen-by-mikel-casal-148-x-21-cm-reproduction_p5gjb5.jpg",
     "https://res.cloudinary.com/matildecosta/image/upload/v1652707931/bookclub/illustration-hemingway-by-mikel-casal-148-x-21-cms-reproduction_gbx5yf.jpg",
@@ -14,8 +13,7 @@ const randomPhoto = "";
   return pictures[Math.floor(Math.random() * pictures.length)];
 };
 
-const randomPhoto = randomPhoto();
- */
+randomPhoto = randomPhotoArr();
 
 const userSchema = new Schema(
   {
@@ -30,11 +28,11 @@ const userSchema = new Schema(
     email: { type: String, required: true, unique: true },
     img: {
       type: String,
-      //default: randomPhoto,
+      default: randomPhoto,
     },
     password: { type: String, required: true },
     favorites: [{ type: Schema.Types.ObjectId, ref: "Piece" }],
-    collections: [{ type: Schema.Types.ObjectId, ref: "Collections" }],
+    collections: [{ type: Schema.Types.ObjectId, ref: "Collection" }],
   },
   {
     timestamps: true,
