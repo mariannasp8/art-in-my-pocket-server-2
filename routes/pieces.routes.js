@@ -5,11 +5,30 @@ const Piece = require("../models/Piece.model");
 const axios = require("axios");
 const Collection = require("../models/Collection.model");
 
+
 // create piece
 router.post("/create-piece", (req, res) => {
-  const { title, author, img, date, nationality, dimensions } = req.body;
+  const {
+    title,
+    author,
+    img,
+    date,
+    material,
+    nationality,
+    dimensions,
+    description,
+  } = req.body;
 
-  Piece.create({ title, author, img, date, nationality, dimensions })
+  Piece.create({
+    title,
+    author,
+    img,
+    date,
+    material,
+    nationality,
+    dimensions,
+    description,
+  })
     .then((createdPiece) => res.status(201).json(createdPiece))
     .catch((err) => res.status(400).json({ message: "error" }));
 });

@@ -16,6 +16,7 @@ router.post("/create-collection", (req, res) => {
 // populate the collection with pieces
 router.get("/collection", (req, res) => {
   Collection.find()
+    .populate("pieces")
     .then((allCollections) => res.json(allCollections))
     .catch((err) => res.status(400).json({ message: "error" }));
 });
@@ -46,6 +47,7 @@ router.put("/collection/add-piece", (req, res) => {
 // remove pieces from the collection
 router.put("/collection/delete-piece", (req, res) => {
   const { collectionId, pieceId } = req.body;
+  console.log(req.body);
 
   Collection.findByIdAndUpdate(
     collectionId,
@@ -53,7 +55,10 @@ router.put("/collection/delete-piece", (req, res) => {
     { new: true }
   )
 
-    .then((updatedCollection) => res.status(201).json(updatedCollection))
+    .then((updatedCollection) => {
+      console.log(updatedCollection);
+      res.status(201).json(updatedCollection);
+    })
     .catch((err) => res.status(400).json({ message: "error" }));
 });
 
