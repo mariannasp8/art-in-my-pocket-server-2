@@ -5,8 +5,10 @@ const pieceSchema = new Schema({
   author: { type: String },
   img: { type: String },
   date: { type: String },
+  material: { type: String },
   nationality: { type: String },
   dimensions: { type: String },
+  description: { type: String },
   collectionsId: [{ type: Schema.Types.ObjectId, ref: "Collection" }],
 });
 
