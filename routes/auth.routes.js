@@ -62,7 +62,6 @@ router.post("/signup", (req, res) => {
           username,
           name: "",
           email,
-          img: "",
           password: hashedPassword,
           favourites: [],
           collections: [],
@@ -154,15 +153,15 @@ router.get("/profile/:userId", isAuthenticated, (req, res) => {
 });
 
 //change user profile:
-router.put("/edit-profile/:userId", isAuthenticated, (req, res) => {
+router.put("/edit-profile/:userId", isAuthenticated, (req, res, next) => {
   const { _id } = req.payload;
-  const { userId } = req.params();
-  const { username, name, email, img } = req.body;
+  console.log(req.payload);
+  const { username, name } = req.body;
 
   User.findByIdAndUpdate(
-    /*  _id, */
-    userId,
-    { username, name, email, img },
+    _id,
+
+    { username, name },
     { new: true }
   )
     .then((response) => res.json(response))

@@ -1,20 +1,5 @@
 const { Schema, model } = require("mongoose");
 
-// CHECK THIS
-
-const randomPhotoArr = () => {
-  const pictures = [
-    "https://res.cloudinary.com/matildecosta/image/upload/v1652707931/bookclub/illustration-austen-by-mikel-casal-148-x-21-cm-reproduction_p5gjb5.jpg",
-    "https://res.cloudinary.com/matildecosta/image/upload/v1652707931/bookclub/illustration-hemingway-by-mikel-casal-148-x-21-cms-reproduction_gbx5yf.jpg",
-    "https://res.cloudinary.com/matildecosta/image/upload/v1652707931/bookclub/illustration-wolf-by-mikel-casal-148-x-21-cms-reproduction_suhhk4.jpg",
-    "https://res.cloudinary.com/matildecosta/image/upload/v1652707930/bookclub/illustration-fernando-pessoa-by-mikel-casal-148-x-21-cm-reproduction_hppkca.jpg",
-  ];
-
-  return pictures[Math.floor(Math.random() * pictures.length)];
-};
-
-randomPhoto = randomPhotoArr();
-
 const userSchema = new Schema(
   {
     username: {
@@ -28,7 +13,14 @@ const userSchema = new Schema(
     email: { type: String, required: true, unique: true },
     img: {
       type: String,
-      default: randomPhoto,
+      default: (randomPhotoArr = () => {
+        const pictures = [
+          "https://res.cloudinary.com/drsff217k/image/upload/v1654594908/antony-van-dyck-lucas-van-uffel-1622_xc0eay.jpg",
+          "https://res.cloudinary.com/drsff217k/image/upload/v1654594908/bronzino-portrair_of_a_young_man-1530_jkirct.jpg",
+        ];
+
+        return pictures[Math.floor(Math.random() * pictures.length)];
+      }),
     },
     password: { type: String, required: true },
     favorites: [{ type: Schema.Types.ObjectId, ref: "Piece" }],
