@@ -8,9 +8,16 @@ const Collection = require("../models/Collection.model");
 // create collection
 router.post("/create-collection", (req, res) => {
   const { title, img } = req.body;
+  const { _id } = req.payload;
 
   Collection.create({ title, img, pieces: [] })
-    .then((createdCollection) => res.status(201).json(createdCollection))
+    .then((createdCollection) => {
+      User.findByIdAndUpdate(_id, {
+        $push: { collections: createdCollection._id },
+      }).then((updatedUser) => {
+        res.status(201).json(createdCollection);
+      });
+    })
     .catch((err) => res.status(400).json({ message: "error" }));
 });
 // populate the collection with pieces
@@ -41,7 +48,10 @@ router.put("/collection/add-piece", (req, res) => {
   )
 
     .then((updatedCollection) => res.status(201).json(updatedCollection))
-    .catch((err) => res.status(400).json({ message: "error" }));
+    .catch((err) =>{
+      console.log(err)
+      res.status(400).json({ message: "error" })
+    } );
 });
 
 // remove pieces from the collection
