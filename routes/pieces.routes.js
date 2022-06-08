@@ -5,7 +5,6 @@ const Piece = require("../models/Piece.model");
 const axios = require("axios");
 const Collection = require("../models/Collection.model");
 
-
 // create piece
 router.post("/create-piece", (req, res) => {
   const {
@@ -46,6 +45,15 @@ router.get("/search-pieces/:author", (req, res) => {
 
   Piece.find({ author: { $regex: author, $options: "i" } })
     .then((searchedPieces) => res.status(201).json(searchedPieces))
+    .catch((err) => res.status(400).json({ message: "error" }));
+});
+
+// get details page:
+router.get("/details/:pieceId", (req, res) => {
+  const { pieceId } = req.params;
+
+  Piece.findById(pieceId)
+    .then((detailsPieces) => res.status(201).json(detailsPieces))
     .catch((err) => res.status(400).json({ message: "error" }));
 });
 
