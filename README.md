@@ -5,6 +5,11 @@
 
 <br>
 
+
+![app](https://user-images.githubusercontent.com/100592164/175264358-9eae0548-cb1a-4ffa-8321-ef2d65b01502.jpg)
+
+
+
 # Quick Compo
 
 <br>
@@ -88,7 +93,7 @@ Components:
 
 - Is Anon
 - Is Private
-- Navbar
+- Navbar Bottom
 - Add Painting
 - Event
 
@@ -243,7 +248,7 @@ The url to your repository and to your deployed project
 
 ### Slides
 
-[Slides Link](http://slides.com) - The url to your _public_ presentation slides
+[Slides Link]([http://slides.com](https://www.canva.com/design/DAFDIu03R-4/N6xF3g79vGFdXCtltNQd6A/edit?utm_content=DAFDIu03R-4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)) - The url to your _public_ presentation slides
 
 ### Contributors
 
